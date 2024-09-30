@@ -2,12 +2,13 @@ import HeaderBox from '@/components/HeaderBox';
 // import RecentTransactions from '@/components/RecentTransactions';
 import RightSidebar from '@/components/RightSidebar';
 import TotalBalanceBox from '@/components/TotalBalanceBox';
+import { getLoggedInUser } from '@/lib/actions/user.actions';
 // import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
-// import { getLoggedInUser } from '@/lib/actions/user.actions';
+
 
 const Home = async () => {
 //   const currentPage = Number(page as string) || 1;
-  const loggedIn = { firstName : 'Amy',lastName: 'Arora',email:'amy22@gmail.com'};
+  const loggedIn = await getLoggedInUser()
 //   const accounts = await getAccounts({ 
 //     userId: loggedIn.$id 
 //   })
@@ -26,7 +27,7 @@ const Home = async () => {
           <HeaderBox 
             type="greeting"
             title="Welcome"
-            user={loggedIn?.firstName || 'Guest'}
+            user={loggedIn?.name || 'Guest'}
             subtext="Access and manage your account and transactions efficiently."
           />
 
