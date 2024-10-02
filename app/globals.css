@@ -380,3 +380,25 @@
     @apply text-16 font-semibold text-black-2 max-xl:hidden;
   }
 }
+.transfer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.transfer-form select, .transfer-form input {
+  padding: 10px;
+  font-size: 16px;
+}
+
+.transfer-form button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.transfer-form button:hover {
+  background-color: #45a049;
+}
