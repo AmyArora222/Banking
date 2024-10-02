@@ -9,7 +9,7 @@ const BankCard = ({ account, userName, showBalance = true }: CreditCardProps) =>
 //   console.log(account);
   return (
     <div className="flex flex-col">
-      <Link href="/" className="bank-card">
+      <Link href="/transaction-history" className="bank-card">
         <div className="bank-card_content">
           <div>
             <h1 className="text-16 font-semibold text-white">
@@ -67,3 +67,4 @@ const BankCard = ({ account, userName, showBalance = true }: CreditCardProps) =>
 }
 
 export default BankCard
+

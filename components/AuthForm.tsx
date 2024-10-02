@@ -49,20 +49,20 @@ const AuthForm = ({ type }: { type: string }) => {
         // Sign up with Appwrite & create plaid token
         
         if(type === 'sign-up') {
-        //   const userData = {
-        //     firstName: data.firstName!,
-        //     lastName: data.lastName!,
-        //     address1: data.address1!,
-        //     city: data.city!,
-        //     state: data.state!,
-        //     postalCode: data.postalCode!,
-        //     dateOfBirth: data.dateOfBirth!,
-        //     ssn: data.ssn!,
-        //     email: data.email,
-        //     password: data.password
-        //   }
+          const userData = {
+            firstName: data.firstName!,
+            lastName: data.lastName!,
+            address1: data.address1!,
+            city: data.city!,
+            state: data.state!,
+            postalCode: data.postalCode!,
+            dateOfBirth: data.dateOfBirth!,
+            ssn: data.ssn!,
+            email: data.email,
+            password: data.password
+          }
 
-          const newUser = await signUp(data);
+          const newUser = await signUp(userData);
 
           setUser(newUser);
         }
@@ -90,9 +90,9 @@ const AuthForm = ({ type }: { type: string }) => {
               src="/icons/logo.svg"
               width={34}
               height={34}
-              alt="WealthWave logo"
+              alt="Horizon logo"
             />
-            <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">WealthWave</h1>
+            <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">Horizon</h1>
           </Link>
 
           <div className="flex flex-col gap-1 md:gap-3">

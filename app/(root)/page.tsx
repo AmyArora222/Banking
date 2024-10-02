@@ -1,24 +1,16 @@
 import HeaderBox from '@/components/HeaderBox';
-// import RecentTransactions from '@/components/RecentTransactions';
+import MockTransactions from '@/components/MockTransactions'; // Use MockTransactions component
 import RightSidebar from '@/components/RightSidebar';
 import TotalBalanceBox from '@/components/TotalBalanceBox';
 import { getLoggedInUser } from '@/lib/actions/user.actions';
-// import { getAccount, getAccounts } from '@/lib/actions/bank.actions';
-
 
 const Home = async () => {
-//   const currentPage = Number(page as string) || 1;
-  const loggedIn = await getLoggedInUser()
-//   const accounts = await getAccounts({ 
-//     userId: loggedIn.$id 
-//   })
-
-//   if(!accounts) return;
+  const loggedIn = await getLoggedInUser();
   
-//   const accountsData = accounts?.data;
-//   const appwriteItemId = (id as string) || accountsData[0]?.appwriteItemId;
-
-//   const account = await getAccount({ appwriteItemId })
+  const banks = [
+    { $id: '1', name: 'ICICI', currentBalance: 1235.5 },
+    { $id: '2', name: 'HDFC', currentBalance: 4560.56 },
+  ];
 
   return (
     <section className="home">
@@ -32,27 +24,23 @@ const Home = async () => {
           />
 
           <TotalBalanceBox 
-            accounts={[]}
-            totalBanks={1}
-            totalCurrentBalance={1250.35}
+            accounts={[]} 
+            totalBanks={banks.length}
+            totalCurrentBalance={banks.reduce((total, bank) => total + bank.currentBalance, 0)} 
           />
         </header>
 
-        {/* <RecentTransactions 
-          accounts={[]}
-          transactions={1}
-          appwriteItemId={appwriteItemId}
-          page={currentPage}
-        /> */}
+        {/* Include the MockTransactions component to show the transaction table */}
+        <MockTransactions />
       </div>
 
       <RightSidebar 
         user={loggedIn}
-        transactions={[]}
-        banks={[{currentBalance:1235.5},{currentBalance:4560.56}]}
+        transactions={[]} 
+        banks={banks} 
       />
     </section>
-  )
+  );
 }
 
-export default Home
+export default Home;
