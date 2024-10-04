@@ -2,6 +2,7 @@ import BankCard from '@/components/BankCard';
 import HeaderBox from '@/components/HeaderBox';
 import React from 'react';
 
+
 // Mock bank account data
 const mockAccounts = [
   {
@@ -20,10 +21,10 @@ const mockAccounts = [
   },
 ];
 
-const MyBanks = () => {
+const MyBanks = async() => {
   // Mock logged-in user data
   const loggedIn = { firstName: 'John' };
-
+  
   return (
     <section className='flex'>
       <div className="my-banks">
@@ -53,4 +54,8 @@ const MyBanks = () => {
 }
 
 export default MyBanks;
+
+
+
+
 

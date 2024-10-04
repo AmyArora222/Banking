@@ -28,7 +28,7 @@ const TransferFundsPage = () => {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: Number(amount) * 100,
         currency: "INR",
-        name: "Your company Name",
+        name:"Your company name",
         description: "Fund Transfer",
         order_id: data.orderId,
         handler: function (response: any) {
