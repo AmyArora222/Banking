@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -23,16 +23,29 @@ import { authFormSchema } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { getLoggedInUser, signIn, signUp } from '@/lib/actions/user.actions';
+import BankSelectionForm from './BankSelectionForm';
+import AccountLinkingForm from './AccountLinkingForm';
+
 
 
 const AuthForm = ({ type }: { type: string }) => {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  
+  const [showBankSelection, setShowBankSelection] = useState(false);
+  const [showAccountLinking, setShowAccountLinking] = useState(false);
+  const [selectedBank, setSelectedBank] = useState('');
+  
+  //me
+  const [linkedAccountsCount, setLinkedAccountsCount] = useState(0);
+  const [showAddAccountPrompt, setShowAddAccountPrompt] = useState(false);
+  const [accountLinkComplete, setAccountLinkComplete] = useState(false);
+  //me
 
   const formSchema = authFormSchema(type);
 
-    // 1. Define your form.
+    //form definition
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
       defaultValues: {
@@ -41,7 +54,7 @@ const AuthForm = ({ type }: { type: string }) => {
       },
     })
    
-    // 2. Define a submit handler.
+    //submit handler
     const onSubmit = async (data: z.infer<typeof formSchema>) => {
       setIsLoading(true);
 
@@ -63,7 +76,6 @@ const AuthForm = ({ type }: { type: string }) => {
           const newUser = await signUp(userData);
 
           setUser(newUser);
-          if(userData) router.push('/')
         }
 
         if(type === 'sign-in') {
@@ -79,7 +91,47 @@ const AuthForm = ({ type }: { type: string }) => {
       } finally {
         setIsLoading(false);
       }
-    }
+    };
+
+
+    const handleBankSelect = (bank: string) => {
+      if (bank) {
+        setSelectedBank(bank);
+        setShowBankSelection(false);
+        setShowAccountLinking(true);
+        
+      } else {
+        setShowBankSelection(false);
+      }
+    };
+  
+    const handleLinkAccount = (data: any) => {
+      console.log(`Bank: ${selectedBank}`, `Account Number: ${data.accountNumber}`, `IFSC: ${data.ifsc}`);
+      setShowAccountLinking(false);
+      setLinkedAccountsCount(linkedAccountsCount + 1);
+      setShowAddAccountPrompt(true);
+      
+    };
+    
+    
+    const handleAddAnotherAccount = (addMore: boolean) => {
+    setShowAddAccountPrompt(false);
+    if (addMore) {
+      setShowBankSelection(true);
+    } else {
+      // router.push('/'); 
+      setAccountLinkComplete(true);
+      }
+    };
+    
+    useEffect(() => {
+      if (accountLinkComplete) {
+        router.push('/'); 
+      }
+    }, [accountLinkComplete, router]);
+  
+  
+  
 
   return (
     <section className="auth-form">
@@ -91,9 +143,8 @@ const AuthForm = ({ type }: { type: string }) => {
               height={34}
               alt="WealthWave logo"
             />
-            <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">Horizon</h1>
+            <h1 className="text-26 font-ibm-plex-serif font-bold text-black-1">WealthWave</h1>
           </Link>
-
           <div className="flex flex-col gap-1 md:gap-3">
             <h1 className="text-24 lg:text-36 font-semibold text-gray-900">
               {user 
@@ -113,6 +164,33 @@ const AuthForm = ({ type }: { type: string }) => {
       </header>
       {user ? (
         <div className="flex flex-col gap-4">
+          <Button onClick={() => setShowBankSelection(true)} className="form-btn">
+            Connect Bank
+          </Button>
+          
+          <p className="text-gray-600">Number of linked accounts: {linkedAccountsCount}</p>
+          
+          {showBankSelection && (
+            <BankSelectionForm onBankSelect={handleBankSelect} />
+          )}
+          {showAccountLinking && (
+            <AccountLinkingForm onLinkAccount={handleLinkAccount} />
+          )}
+
+          {showAddAccountPrompt && (
+            <div className="flex flex-col items-center">
+              <p>Do you wish to add another account?</p>
+              <div className="flex gap-4">
+                <Button onClick={() => handleAddAnotherAccount(true)} className="px-4 py-2 border border-gray-300 rounded-md">
+                  Yes
+                </Button>
+                <Button onClick={() => handleAddAnotherAccount(false)} className="px-4 py-2 border border-gray-300 rounded-md">
+                  No
+                </Button>
+              </div>
+            </div>
+          )}
+
         </div>
       ): (
         <>

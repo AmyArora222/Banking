@@ -29,8 +29,6 @@ declare type User = {
   $id: string;
   email: string;
   userId: string;
-  // dwollaCustomerUrl: string;
-  // dwollaCustomerId: string;
   firstName: string;
   lastName: string;
   name: string;
@@ -63,24 +61,48 @@ declare type Account = {
   sharableId: string;
 };
 
-declare type Transaction = {
-  id: string;
-  $id: string;
-  name: string;
-  paymentChannel: string;
-  type: string;
-  accountId: string;
+// declare type Transaction = {
+//   id: string;
+//   $id: string;
+//   name: string;
+//   paymentChannel: string;
+//   type: string;
+//   accountId: string;
+//   amount: number;
+//   pending: boolean;
+//   category: string;
+//   date: string;
+//   image: string;
+//   type: string;
+//   $createdAt: string;
+//   channel: string;
+//   senderBankId: string;
+//   receiverBankId: string;
+// };
+
+type Transaction = {
+  name:string;
   amount: number;
-  pending: boolean;
-  category: string;
-  date: string;
-  image: string;
-  type: string;
-  $createdAt: string;
-  channel: string;
-  senderBankId: string;
-  receiverBankId: string;
+  status:string
+  date: string; 
 };
+
+
+declare type RazorpayResponse = {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+};
+type RazorpayXLinkProps = {
+  user: {
+    name: string;
+    email: string;
+    contact: string;
+  };
+  variant: 'primary' | 'ghost' | 'default';
+};
+
+
 
 declare type Bank = {
   $id: string;
@@ -113,8 +135,8 @@ declare type Receiver = {
 };
 
 declare type TransferParams = {
-  sourceFundingSourceUrl: string;
-  destinationFundingSourceUrl: string;
+  sourceAccountId: string;
+  destinationAccountId: string;
   amount: string;
 };
 
@@ -124,7 +146,7 @@ declare type AddFundingSourceParams = {
   bankName: string;
 };
 
-declare type NewDwollaCustomerParams = {
+declare type NewRazorpayCustomerParams = {
   firstName: string;
   lastName: string;
   email: string;
@@ -136,6 +158,8 @@ declare type NewDwollaCustomerParams = {
   dateOfBirth: string;
   ssn: string;
 };
+
+
 
 declare interface CreditCardProps {
   account: Account;
@@ -220,6 +244,7 @@ declare interface RightSidebarProps {
   banks: Bank[] & Account[];
 }
 
+
 declare interface SiderbarProps {
   user: User;
 }
@@ -280,14 +305,20 @@ declare interface CreateFundingSourceOptions {
   _links: object; // Dwolla On Demand Authorization Link
 }
 
+// declare interface CreateTransactionProps {
+//   name: string;
+//   amount: string;
+//   senderId: string;
+//   senderBankId: string;
+//   receiverId: string;
+//   receiverBankId: string;
+//   email: string;
+// }
 declare interface CreateTransactionProps {
   name: string;
   amount: string;
-  senderId: string;
-  senderBankId: string;
-  receiverId: string;
-  receiverBankId: string;
-  email: string;
+  status:string;
+  date:string;
 }
 
 declare interface getTransactionsByBankIdProps {
@@ -313,8 +344,8 @@ declare interface createBankAccountProps {
   userId: string;
   accountId: string;
   bankId: string;
-  fundingSourceUrl: string;
-  sharableId: string;
+  // fundingSourceUrl: string;
+  // sharableId: string;
 }
 
 declare interface getBanksProps {

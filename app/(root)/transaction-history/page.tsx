@@ -1,10 +1,30 @@
-import HeaderBox from '@/components/HeaderBox';
-import RandomTransactions from '@/components/MockTransactions'; // Import the MockTransactions component
-import React from 'react';
-import { formatAmount } from '@/lib/utils';
+"use client";
 
-const TransactionHistory = async () => {
-  const randomBalance = Math.floor(Math.random() * (100000 - 10000 + 1)) + 10000;
+import { Client, Databases } from "node-appwrite";
+import HeaderBox from '@/components/HeaderBox';
+import React, { useEffect, useState } from 'react';
+import { formatAmount } from '@/lib/utils';
+import TransactionsTable from '@/components/TransactionsTable'; 
+import { getTransactions } from "@/lib/actions/transaction.actions";
+
+const TransactionHistory = () => {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        const data = await getTransactions(); // Fetch transactions using the getTransactions function
+        setTransactions(data.documents); // Set the fetched transactions in state
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+      } finally {
+        setLoading(false); // Stop the loading state after fetching data
+      }
+    };
+
+    fetchTransactions(); // Call the fetch function on component mount
+  }, []);
 
   return (
     <div className="transactions">
@@ -14,22 +34,11 @@ const TransactionHistory = async () => {
           subtext="See your bank details and transactions."
         />
       </div>
-
-      {/* Current Balance Box */}
-      <div className="balance-box p-4 rounded-lg bg-blue-500 shadow-md flex justify-between items-center mb-6">
-        <h2 className="text-lg font-semibold text-white">Current Balance</h2>
-        <p className="text-xl font-bold text-white">{formatAmount(randomBalance)}</p>
-      </div>
-
-      <div className="space-y-6">
-        <section className="flex w-full flex-col gap-6">
-          <RandomTransactions /> {/* Displaying the MockTransactions component */}
-        </section>
-      </div>
+      <p>Recent Transactions</p>
+      {/* Replace div-based rendering with the TransactionsTable component */}
+      <TransactionsTable transactions={transactions}/>
     </div>
   );
 };
 
 export default TransactionHistory;
-
-

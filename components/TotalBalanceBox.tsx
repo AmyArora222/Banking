@@ -3,9 +3,13 @@ import DoughnutChart from './DoughnutChart';
 import { formatAmount } from "@/lib/utils"
 import CountUp from "react-countup"
 
+import { useState } from 'react'; 
+import AccountLinkingForm from './AccountLinkingForm';
+
 const TotalBalanceBox = ({
   accounts = [], totalBanks, totalCurrentBalance
 }: TotlaBalanceBoxProps) => {
+
   return (
     <section className="total-balance">
       <div className="total-balance-chart">
@@ -15,7 +19,7 @@ const TotalBalanceBox = ({
 
       <div className="flex flex-col gap-6">
         <h2 className="header-2">
-          Bank Accounts: {totalBanks}
+          Bank Accounts: 2
         </h2>
         <div className="flex flex-col gap-2">
           <p className="total-balance-label">
@@ -27,6 +31,7 @@ const TotalBalanceBox = ({
           </div>
         </div>
       </div>
+      {/* <AccountLinkingForm onLinkAccount={handleLinkAccount} /> */}
     </section>
   )
 }

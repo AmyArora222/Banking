@@ -1,7 +1,7 @@
 import BankCard from '@/components/BankCard';
 import HeaderBox from '@/components/HeaderBox';
 import React from 'react';
-
+import { getLoggedInUser } from '@/lib/actions/user.actions';
 
 // Mock bank account data
 const mockAccounts = [
@@ -23,7 +23,8 @@ const mockAccounts = [
 
 const MyBanks = async() => {
   // Mock logged-in user data
-  const loggedIn = { firstName: 'John' };
+  // const loggedIn = { firstName: 'Joh' };
+  const loggedIn = await getLoggedInUser();
   
   return (
     <section className='flex'>

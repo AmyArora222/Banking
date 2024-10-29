@@ -2,8 +2,15 @@
 
 import React, { useState } from "react";
 import Script from "next/script";
-declare global{
-  interface Window{
+import { Client, Databases, Role,Permission } from "node-appwrite";
+import { permission } from "process";
+import { any } from "zod";
+import { ID, Query } from "node-appwrite";
+// import { getLoggedInUser } from "@/lib/actions/user.actions";
+import { createTransaction } from "@/lib/actions/transaction.actions";
+
+declare global {
+  interface Window {
     Razorpay: any;
   }
 }
@@ -11,44 +18,60 @@ declare global{
 const TransferFundsPage = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [note, setNote] = useState('');
-  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
   const [amount, setAmount] = useState('');
 
+  
   const handleTransfer = async () => {
     setIsProcessing(true);
 
     try {
-        // Create order
+      // Create order
       const response = await fetch("/api/create-order", { method: "POST" });
       const data = await response.json();
-      
+
       // Initialize Razorpay
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: Number(amount) * 100,
         currency: "INR",
-        name:"Your company name",
+        name: "Amy",
         description: "Fund Transfer",
         order_id: data.orderId,
-        handler: function (response: any) {
-        console.log("Payment successful", response);
+        handler: async function (response: RazorpayResponse) {
+          console.log("Payment successful", response);
+
+          const transactionData = {
+            name,
+            amount,
+            status: 'success',
+            date: new Date().toISOString(),
+          };
+
+          try {
+            const result = await createTransaction(transactionData);
+            console.log("Transaction stored successfully:", result);
+          } catch (error) {
+            console.error("Error storing transaction:", error);
+          }
         },
         prefill: {
-          email,
-          contact: "9873468034", // You can make this dynamic as needed
+          name,
+          contact: "9873468034", 
         },
         theme: {
           color: "#3399cc",
         },
       };
+
       const rzp1 = new window.Razorpay(options);
       rzp1.open();
-      } catch (error) {
-          console.error("Payment failed", error);
-      } finally {
-          setIsProcessing(false);
-        }
+    } catch (error) {
+      console.error("Payment failed", error);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   return (
@@ -75,14 +98,14 @@ const TransferFundsPage = () => {
           <p className="text-gray-500 mb-2">Enter the bank account details of the recipient.</p>
 
           <div className="flex mb-4">
-            <label htmlFor="email" className="w-1/4 font-normal text-lg">Recipient's Email:</label>
+            <label htmlFor="email" className="w-1/4 font-normal text-lg">Recipient's Name:</label>
             <input 
-              type="email" 
-              id="email" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
+              type="text" 
+              id="name" 
+              value={name} 
+              onChange={(e) => setName(e.target.value)} 
               className="w-3/4 p-4 border rounded-lg" 
-              placeholder="Enter recipient's email" 
+              placeholder="Enter recipient's name" 
               required 
             />
           </div>

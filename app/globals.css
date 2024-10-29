@@ -402,3 +402,54 @@
 .transfer-form button:hover {
   background-color: #45a049;
 }
+
+
+
+
+.auth-form {
+  position: relative;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.bg-black {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.w-96 {
+  width: 24rem; 
+}
+
+.max-h-400 {
+  max-height: 800px; 
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.z-50 {
+  z-index: 50;
+}
+
+.absolute {
+  position: absolute;
+}
