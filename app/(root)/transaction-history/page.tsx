@@ -14,16 +14,16 @@ const TransactionHistory = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const data = await getTransactions(); // Fetch transactions using the getTransactions function
-        setTransactions(data.documents); // Set the fetched transactions in state
+        const data = await getTransactions(); 
+        setTransactions(data.documents); 
       } catch (error) {
         console.error("Error fetching transactions:", error);
       } finally {
-        setLoading(false); // Stop the loading state after fetching data
+        setLoading(false); 
       }
     };
 
-    fetchTransactions(); // Call the fetch function on component mount
+    fetchTransactions(); 
   }, []);
 
   return (

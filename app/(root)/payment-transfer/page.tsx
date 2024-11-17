@@ -6,7 +6,6 @@ import { Client, Databases, Role,Permission } from "node-appwrite";
 import { permission } from "process";
 import { any } from "zod";
 import { ID, Query } from "node-appwrite";
-// import { getLoggedInUser } from "@/lib/actions/user.actions";
 import { createTransaction } from "@/lib/actions/transaction.actions";
 
 declare global {
